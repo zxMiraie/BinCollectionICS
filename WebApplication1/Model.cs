@@ -1,8 +1,11 @@
 ﻿namespace WebApplication1;
 
-
-public class Model
+public class Root
 {
-    public DateTime CollectionDay { get; set; }
-    public string Type { get; set; }
+    public List<collectionItem> collectionItems { get; set; }
+}
+public class collectionItem
+{
+    public DateTime date { get; set; }
+    public string type { get; set; }
 }

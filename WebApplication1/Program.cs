@@ -1,21 +1,22 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Globalization;
 
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-string UPRN = Environment.GetEnvironmentVariable("UPRN");
-
-string ApiEndpoint = $"https://api.westnorthants.digital/openapi/v1/unified-waste-collections/{UPRN}";
-
-
-if (app.Environment.IsDevelopment())
+using (var httpClient = new HttpClient())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    await GetAsync(httpClient);
 }
 
-app.UseHttpsRedirection();
-
+static async Task GetAsync(HttpClient httpClient)
+{
+    var uprn = Environment.GetEnvironmentVariable("UPRN");
+    
+    var response = await httpClient.GetAsync($"https://api.westnorthants.digital/openapi/v1/unified-waste-collections/{uprn}");
+    if (response.IsSuccessStatusCode)
+    {
+        var content = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(content);
+    }
+    else
+    {
+        Console.WriteLine($"Request failed with status code: {response.StatusCode}");
+    }
+}
