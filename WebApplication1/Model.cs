@@ -2,7 +2,7 @@
 
 public class Root
 {
-    public List<collectionItem> collectionItems { get; set; }
+    public List<collectionItem>? collectionItems { get; set; }
 }
 public class collectionItem
 {
