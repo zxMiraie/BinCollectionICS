@@ -1,0 +1,28 @@
+﻿version: '3.8'
+
+services:
+  waste-calendar:
+    build:
+      context: .
+      dockerfile: WebApplication1/Dockerfile
+    container_name: waste-calendar
+    ports:
+      - "9999:9999"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:9999
+      - UPRN=${UPRN}
+      - WasteApi__BaseUrl=https://api.westnorthants.digital/openapi/v1/
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9999/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
